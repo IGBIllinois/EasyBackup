@@ -1,0 +1,4 @@
+#####EasyBackup Cron########
+
+0 1 * * * root /usr/local/EasyBackup/bin/backup.sh
+
