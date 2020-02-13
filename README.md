@@ -1,5 +1,10 @@
 # EasyBackup
-Rsync Backup Program
+* Backup program using rsync and hard links
+* Very good at backing up large amounts (Many Terabytes) of data reliably.
+
+## Requirements
+* Rsync - [https://rsync.samba.org/](https://rsync.samba.org/)
+* Bash - [https://www.gnu.org/software/bash/](https://www.gnu.org/software/bash/)
 
 ## Installation
 * Create local user that this program will run as

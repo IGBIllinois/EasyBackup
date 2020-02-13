@@ -34,11 +34,12 @@ then
 	exit 1
 fi
 
-if [ -z "$NUM_BACKPS" ]
+if [ -z "$NUM_BACKUPS" ]
 then
 	echo "NUM_BACKUPS is not set. Aborting"
 	exit 1
 fi
+
 if [ -f "$LOCK_FILE" ]
 then
 	echo "Lock file $LOCK_FILE exists. Aborting"
@@ -50,7 +51,7 @@ touch $LOCK_FILE
 
 echo "`timestamp` Remove Old Backups"
 RM_CMD=""
-echo "`timestamp' COMMAND: $RM_CMD"
+echo "`timestamp` COMMAND: $RM_CMD"
 #$RM_CMD
 if [ $? -ne 0 ]
 then
@@ -97,3 +98,4 @@ fi
 echo "`timestamp` Finished Backup"
 cleanup
 exit 0
+
