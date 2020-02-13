@@ -1,7 +1,11 @@
 #!/bin/bash
 
 TODAY=`date +%Y%m%d`
+APP="../conf/app"
 CONFIG="../conf/config"
+
+#SOURCE ../conf/app
+. $APP
 
 #timestamp - Gets current time
 timestamp() {
@@ -12,6 +16,26 @@ timestamp() {
 cleanup() {
 	unlink $LOCK_FILE
 }
+
+usage() {
+	echo "usage: backup.sh"
+	echo "	--help		Output this help menu"
+	echo "	--version	Print Version Number"
+	echo "	--dry-run	Dry Run - output commands only"
+	echo "Version: $VERSION"
+	echo "Website: $WEBSITE"
+}
+
+if [ "$1" == "--help" ]
+then
+	usage
+	exit 0
+fi
+if [ "$1" == "--version" ]
+then
+	echo $VERSION
+	exit 0
+fi
 
 if [ ! -f "$CONFIG" ]
 then
