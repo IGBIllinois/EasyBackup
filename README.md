@@ -2,6 +2,15 @@
 Rsync Backup Program
 
 ## Installation
+* Create local user that this program will run as
+```
+useradd -d /usr/local/EasyBackup -U -r -s /bin/nologin easybackup
+```
+* Create permissions on destination folder for the user
+```
+chown easybackup.easybackup /backups
+```
+
 * Copy conf/config.dist to conf/config
 ```
 cp conf/config.dist conf/config
