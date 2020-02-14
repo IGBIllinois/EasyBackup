@@ -4,9 +4,12 @@ TODAY=`date +%Y%m%d`
 APP="../conf/app"
 CONFIG="../conf/config"
 DRYRUN=0
+CURRENT_DIR=`dirname "$0"`
 
 #SOURCE ../conf/app
-. $APP
+. $CURRENT_DIR/$APP
+
+echo "$CURRENT_DIR/$APP"
 
 #timestamp - Gets current time
 timestamp() {
@@ -43,14 +46,15 @@ then
 	DRYRUN=1
 fi
 
-if [ ! -f "$CONFIG" ]
+if [ ! -f "$CURRENT_DIR/$CONFIG" ]
 then
 	echo "Config File does not exist"
 	exit 1
 fi
 
 #Source config file
-. $CONFIG
+. $CURRENT_DIR/$CONFIG
+
 
 if [ ! -d "$DESTINATION" ]
 then
@@ -85,11 +89,11 @@ fi
 touch $LOCK_FILE
 
 echo "`timestamp` Remove Old Backups"
-RM_CMD=""
+RM_CMD="ls -1tr $DESTINATION | head -n -$NUM_BACKUPS | xargs -d '\n' rm -rf --"
 echo "`timestamp` COMMAND: $RM_CMD"
 if [ $DRYRUN -ne 1 ] 
 then
-	#$RM_CMD
+	eval $RM_CMD
 	if [ $? -ne 0 ]
 	then
         	echo "`timestamp` Aborting"
@@ -98,28 +102,16 @@ then
 	fi
 fi
 
-echo "`timestamp` Creating backup folder $DESTINATION/$TODAY"
-MKDIR_CMD="mkdir $DESTINATION/$TODAY"
-echo "`timestamp` COMMAND: $MKDIR_CMD"
+PREVIOUS_BACKUP=`ls -t $DESTINATION | head -n 1`
 
-if [ $DRYRUN -ne 1 ]
-then
-	#MKDIR_CMD
-	if [ $? -ne 0 ]
-	then
-		echo "`timestamp` Aborting"
-		cleanup
-		exit 1
-	fi
-fi
 
 echo "`timestamp` Copying Previous backup into $DESTINATION/$TODAY"
-CP_CMD="time cp -flrP $PREVIOUS_BACKUP $DESTINATION/$TODAY"
+CP_CMD="time cp -flrP $DESTINATION/$PREVIOUS_BACKUP $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $CP_CMD"
 
 if [ $DRYRUN -ne 1 ]
 then
-	#CP_CMD
+	$CP_CMD
 	if [ $? -ne 0 ]
 	then
         	echo "`timestamp` Aborting"
@@ -129,12 +121,12 @@ then
 fi
 
 echo "`timestamp` Rsyncing data from source to $DESTINATION/$TODAY"
-RSYNC_CMD="time rsync -av --delete $SOURCE $DESTINATION/$TODAY"
+RSYNC_CMD="time rsync -av --delete $SOURCE/ $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $RSYNC_CMD"
 
 if [ $DRYRUN -ne 1 ]
 then
-	#RSYNC_CMD
+	$RSYNC_CMD
 	if [ $? -ne 0 ]
 	then
         	echo "`timestamp` Aborting"
