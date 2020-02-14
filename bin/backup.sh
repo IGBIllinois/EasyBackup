@@ -3,6 +3,7 @@
 TODAY=`date +%Y%m%d`
 APP="../conf/app"
 CONFIG="../conf/config"
+DRYRUN=0
 
 #SOURCE ../conf/app
 . $APP
@@ -35,6 +36,11 @@ if [ "$1" == "--version" ]
 then
 	echo $VERSION
 	exit 0
+fi
+
+if [ "$1" == "--dry-run" ]
+then
+	DRYRUN=1
 fi
 
 if [ ! -f "$CONFIG" ]
@@ -71,53 +77,71 @@ then
 fi
 
 echo "`timestamp` Starting backup"
+if [ $DRYRUN -eq 1 ] 
+then
+	echo "`timestamp` Dry Run"
+fi
+
 touch $LOCK_FILE
 
 echo "`timestamp` Remove Old Backups"
 RM_CMD=""
 echo "`timestamp` COMMAND: $RM_CMD"
-#$RM_CMD
-if [ $? -ne 0 ]
+if [ $DRYRUN -ne 1 ] 
 then
-        echo "`timestamp` Aborting"
-        cleanup
-        exit 1
+	#$RM_CMD
+	if [ $? -ne 0 ]
+	then
+        	echo "`timestamp` Aborting"
+	        cleanup
+        	exit 1
+	fi
 fi
 
 echo "`timestamp` Creating backup folder $DESTINATION/$TODAY"
 MKDIR_CMD="mkdir $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $MKDIR_CMD"
-#MKDIR_CMD
-if [ $? -ne 0 ]
+
+if [ $DRYRUN -ne 1 ]
 then
-	echo "`timestamp` Aborting"
-	cleanup
-	exit 1
+	#MKDIR_CMD
+	if [ $? -ne 0 ]
+	then
+		echo "`timestamp` Aborting"
+		cleanup
+		exit 1
+	fi
 fi
 
 echo "`timestamp` Copying Previous backup into $DESTINATION/$TODAY"
 CP_CMD="time cp -flrP $PREVIOUS_BACKUP $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $CP_CMD"
-#CP_CMD
-if [ $? -ne 0 ]
-then
-        echo "`timestamp` Aborting"
-        cleanup
-        exit 1
-fi
 
+if [ $DRYRUN -ne 1 ]
+then
+	#CP_CMD
+	if [ $? -ne 0 ]
+	then
+        	echo "`timestamp` Aborting"
+	        cleanup
+        	exit 1
+	fi
+fi
 
 echo "`timestamp` Rsyncing data from source to $DESTINATION/$TODAY"
 RSYNC_CMD="time rsync -av --delete $SOURCE $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $RSYNC_CMD"
-#RSYNC_CMD
-if [ $? -ne 0 ]
-then
-        echo "`timestamp` Aborting"
-        cleanup
-        exit 1
-fi
 
+if [ $DRYRUN -ne 1 ]
+then
+	#RSYNC_CMD
+	if [ $? -ne 0 ]
+	then
+        	echo "`timestamp` Aborting"
+	        cleanup
+        	exit 1
+	fi
+fi
 
 echo "`timestamp` Finished Backup"
 cleanup
