@@ -106,7 +106,7 @@ PREVIOUS_BACKUP=`ls -t $DESTINATION | head -n 1`
 
 
 echo "`timestamp` Copying Previous backup into $DESTINATION/$TODAY"
-CP_CMD="time cp -flrP $DESTINATION/$PREVIOUS_BACKUP $DESTINATION/$TODAY"
+CP_CMD="time cp -aflrP $DESTINATION/$PREVIOUS_BACKUP $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $CP_CMD"
 
 if [ $DRYRUN -ne 1 ]
