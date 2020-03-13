@@ -89,7 +89,7 @@ fi
 touch $LOCK_FILE
 
 echo "`timestamp` Remove Old Backups"
-RM_CMD="ls -1tr $DESTINATION | head -n -$NUM_BACKUPS | xargs -d '\n' rm -rf --"
+RM_CMD="ls -1trd $DESTINATION/* | tail -n +${NUM_BACKUPS} | xargs -d '\n' rm -rf --"
 echo "`timestamp` COMMAND: $RM_CMD"
 if [ $DRYRUN -ne 1 ] 
 then
