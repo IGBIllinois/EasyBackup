@@ -1,5 +1,4 @@
 #!/bin/bash
-
 TODAY=`date +%Y%m%d`
 APP="../conf/app"
 CONFIG="../conf/config"
