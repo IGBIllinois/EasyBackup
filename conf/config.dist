@@ -1,4 +1,3 @@
 SOURCE=
 DESTINATION=
 NUM_BACKUPS=
-LOCK_FILE=/var/lock/easybackup.lock
