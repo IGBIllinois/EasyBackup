@@ -10,11 +10,11 @@
 
 ## Installation
 * Install rsync if not already installed
-** For Redhat/CentOS
+* For Redhat/CentOS
 ```
 yum install rsync
 ```
-** For Debian/Ubuntu
+* For Debian/Ubuntu
 ```
 apt-get install rsync
 ```
