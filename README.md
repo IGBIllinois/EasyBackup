@@ -32,6 +32,7 @@ LOCK_FILE=/var/lock/easybackup.lock
 ```
 * If the SOURCE is a remote host, create ssh keys 
 ```
+ssh-keygen
 ssh-copy-id root@sourcehost.com
 ```
 * Copy example cron file from conf/cron.dist to conf/cron
