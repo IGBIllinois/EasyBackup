@@ -1,4 +1,9 @@
 #!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
 TODAY=`date +%Y%m%d`
 APP="../conf/app"
 CONFIG="../conf/config"
@@ -8,7 +13,6 @@ CURRENT_DIR=`dirname "$0"`
 #SOURCE ../conf/app
 . $CURRENT_DIR/$APP
 
-echo "$CURRENT_DIR/$APP"
 
 #timestamp - Gets current time
 timestamp() {
@@ -29,18 +33,18 @@ usage() {
 	echo "Website: $WEBSITE"
 }
 
-if [ "$1" == "--help" ]
+if [ $# -gt 0 ] && [ $1 == "--help" ]
 then
 	usage
 	exit 0
 fi
-if [ "$1" == "--version" ]
+if [ $# -gt 0 ] && [ $1 == "--version" ]
 then
 	echo $VERSION
 	exit 0
 fi
 
-if [ "$1" == "--dry-run" ]
+if [ $# -gt 0 ] && [ $1 == "--dry-run" ]
 then
 	DRYRUN=1
 fi
@@ -101,6 +105,11 @@ then
 	fi
 fi
 
+if [ -d "$DESTINATION/$TODAY" ]
+then
+	echo "`timestamp` Destination directory $DESTINATION/$TODAY already exists"
+	exit 1
+fi
 PREVIOUS_BACKUP=`ls -tr $DESTINATION | head -n 1`
 
 
