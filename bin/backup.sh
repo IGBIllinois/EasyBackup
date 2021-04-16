@@ -114,7 +114,7 @@ PREVIOUS_BACKUP=`ls -tr $DESTINATION | head -n 1`
 
 
 echo "`timestamp` Copying Previous backup into $DESTINATION/$TODAY"
-CP_CMD="/usr/bin/time cp -aflrP $DESTINATION/$PREVIOUS_BACKUP $DESTINATION/$TODAY"
+CP_CMD="cp -aflrP $DESTINATION/$PREVIOUS_BACKUP $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $CP_CMD"
 
 if [ $DRYRUN -ne 1 ]
@@ -129,7 +129,7 @@ then
 fi
 
 echo "`timestamp` Rsyncing data from source to $DESTINATION/$TODAY"
-RSYNC_CMD="/usr/bin/time rsync -av --delete $SOURCE/ $DESTINATION/$TODAY"
+RSYNC_CMD="rsync -av --delete $SOURCE/ $DESTINATION/$TODAY"
 echo "`timestamp` COMMAND: $RSYNC_CMD"
 
 if [ $DRYRUN -ne 1 ]
