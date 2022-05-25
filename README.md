@@ -1,5 +1,5 @@
 # EasyBackup
-![Travis](https://www.travis-ci.com/IGBIllinois/EasyBackup.svg?branch=master)
+[![Build Status](https://github.com/IGBIllinois/EasyBackup/actions/workflows/main.yml/badge.svg)](https://github.com/IGBIllinois/EasyBackup/actions/workflows/main.yml)
 
 * Backup program using rsync and hard links
 * Very good at backing up large amounts (Many Terabytes) of data reliably.
