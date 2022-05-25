@@ -1,2 +1,2 @@
-/conf/config
-/conf/cron
+/conf/*
+!/conf/*.dist

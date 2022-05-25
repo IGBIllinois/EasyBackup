@@ -1,3 +1,2 @@
-VERSION=1.05
+VERSION=1.06
 WEBSITE="https://github.com/IGBIllinois/EasyBackup/"
-LOCK_FILE=/var/lock/easybackup.lock

@@ -9,6 +9,7 @@ APP="../conf/app"
 CONFIG="../conf/config"
 DRYRUN=0
 CURRENT_DIR=`dirname "$0"`
+LOCK_FILE=/var/lock/easybackup.lock
 
 #SOURCE ../conf/app
 . $CURRENT_DIR/$APP
@@ -26,34 +27,43 @@ cleanup() {
 
 usage() {
 	echo "usage: backup.sh"
-	echo "	--help		Output this help menu"
-	echo "	--version	Print Version Number"
-	echo "	--dry-run	Dry Run - output commands only"
+	echo "	-p	Profile File to use.  Defaults to conf/config"
+	echo "	-h	Output this help menu"
+	echo "	-v	Print Version Number"
+	echo "	-d	Dry Run - output commands only"
 	echo "Version: $VERSION"
 	echo "Website: $WEBSITE"
 }
 
-if [ $# -gt 0 ] && [ $1 == "--help" ]
-then
-	usage
-	exit 0
-fi
-if [ $# -gt 0 ] && [ $1 == "--version" ]
-then
-	echo $VERSION
-	exit 0
-fi
+while getopts 'hvdp:' opt; do
+	case "$opt" in
+	h)
+		usage
+		exit 0
+		;;
+	v)
+		echo $VERSION
+		exit 0
+		;;
+	d)
+		DRYRUN=1
+		;;
+	p)
+		CONFIG="../conf/${OPTARG}"
+		LOCK_FILE=/var/lock/easybackup-${OPTARG}.lock
+		;;
+	esac
+done
 
-if [ $# -gt 0 ] && [ $1 == "--dry-run" ]
-then
-	DRYRUN=1
-fi
+echo "Current Dir: $CURRENT_DIR"
+echo "Config: ${CONFIG}"
 
 if [ ! -f "$CURRENT_DIR/$CONFIG" ]
 then
 	echo "Config File does not exist"
 	exit 1
 fi
+
 
 #Source config file
 . $CURRENT_DIR/$CONFIG
