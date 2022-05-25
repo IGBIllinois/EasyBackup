@@ -1,8 +1,0 @@
-language: generic
-
-branches:
-    only:
-    - master
-
-script:
-    - if find . -name "*.sh" -exec /bin/bash -n {} \; | grep "syntax error"; then exit 1; fi
